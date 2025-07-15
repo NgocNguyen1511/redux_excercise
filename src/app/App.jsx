@@ -8,7 +8,6 @@ const App = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <IndexScreen />
-        {/* <CounterScreen/> */}
       </PersistGate>
     </Provider>
   );

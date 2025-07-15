@@ -7,7 +7,6 @@ interface ArrayModel {
   title: string;
   url: string;
   thumbnailUrl: string;
-  // timeStamp?: number;
 }
 
 type States = {
@@ -57,6 +56,7 @@ const dataSlice = createSlice({
     setEditedItem(state, action) {
       const id = action.payload;
       const stateArrId = state.editedIds;
+      // eslint-disable-next-line no-unused-expressions
       !stateArrId.includes(id) ? stateArrId.push(id) : [];
     },
     clearEdited(state) {

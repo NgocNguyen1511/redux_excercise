@@ -1,5 +1,5 @@
 import APP_COLORS from "@/src/constants/Colors";
-import { useState, memo } from "react";
+import { useState, memo, useMemo } from "react";
 import {
   Image,
   StyleSheet,
@@ -12,27 +12,37 @@ import { setItemTitle } from "../redux/dataSlice";
 import { useAppDispatch } from "../redux/hook";
 
 const ListItem = ({ item }) => {
-  // console.log("re render");
-
   const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState(false);
+  const [inputText, setInputText] = useState(item.title);
 
-  //
   const backgroundColor =
     item.id % 2 === 0 ? APP_COLORS.GREY : APP_COLORS.WHITE;
   const textColor =
     backgroundColor === APP_COLORS.GREY ? APP_COLORS.WHITE : APP_COLORS.BLACK;
 
-  //
+  //handletext
   const handleChangeText = (text) => {
-    // dispatch(setEditedItem(item.id));
-    // setData((prev) =>
-    //   prev.map((oldItem) =>
-    //     oldItem.id === item.id ? { ...oldItem, title: text } : oldItem
-    //   )
-    // );
-    dispatch(setItemTitle({ id: item.id, title: text }));
+    setInputText(text);
+    debouncedSetTitle(text);
   };
+
+  //debouce
+  const debounce = (callback, delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        callback(...args);
+      }, delay);
+    };
+  };
+
+  const debouncedSetTitle = useMemo(() => {
+    return debounce((text) => {
+      dispatch(setItemTitle({ id: item.id, title: text }));
+    }, 500);
+  }, [item.id, dispatch]);
 
   return (
     <View style={[styles.itemContainer, { backgroundColor }]}>
@@ -40,7 +50,7 @@ const ListItem = ({ item }) => {
       <View style={styles.textContainer}>
         {isEditing ? (
           <TextInput
-            value={item.title}
+            value={inputText}
             onChangeText={handleChangeText}
             onBlur={() => setIsEditing(false)}
             autoFocus
