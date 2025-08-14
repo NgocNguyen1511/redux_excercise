@@ -9,13 +9,11 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import counterReducer from "./counterSlice";
 import dataReducer from "./dataSlice";
 import storage from "@react-native-async-storage/async-storage";
 
 const reducer = combineReducers({
   data: dataReducer,
-  counter: counterReducer,
 });
 
 export const persistConfig = {

@@ -11,7 +11,8 @@ import {
 import { setItemTitle } from "../redux/dataSlice";
 import { useAppDispatch } from "../redux/hook";
 
-const ListItem = ({ item }) => {
+const ListItem = ({ item, ...props }) => {
+  const { index } = props;
   const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [inputText, setInputText] = useState(item.title);
@@ -65,6 +66,7 @@ const ListItem = ({ item }) => {
         )}
         <Text style={[styles.title, { color: textColor }]}>{item.url}</Text>
         <Text style={[styles.title, { color: textColor }]}>{Date.now()}</Text>
+        <Text style={[styles.title, { color: APP_COLORS.ERROR }]}>{index}</Text>
       </View>
     </View>
   );
